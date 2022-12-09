@@ -1,0 +1,90 @@
+
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128 // OLED display width,  in pixels
+#define SCREEN_HEIGHT 64 
+#define OLED_RESET 4
+
+
+Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+Adafruit_SSD1306 display(OLED_RESET);
+
+
+void dis_val(int val)
+{
+  
+
+
+  oled.clearDisplay(); // clear display
+
+  oled.setTextSize(4);          
+  oled.setTextColor(WHITE);     
+  oled.setCursor(12, 13);        
+  oled.println(String(val)+"cm"); 
+
+  oled.display();        
+  
+}
+
+void dis_string(String x)
+{
+  oled.clearDisplay();
+
+  oled.setTextSize(2);          
+  oled.setTextColor(WHITE);     
+  oled.setCursor(8, 13);        
+  oled.println(x); 
+
+  oled.display();        
+  
+}
+
+int ledPin1 = 9;// LED connected to digital pin 13
+int ledPin2 = 7;
+void setup()
+{
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+   Serial.begin(9600);
+
+
+  if (!oled.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    while (true);
+  }
+  
+}
+int check=0;
+void loop()
+{
+  dis_string("Activating");
+  delay(1000);
+  digitalWrite(ledPin2, LOW);//initial state
+  digitalWrite(ledPin1, LOW);//initial state
+  digitalWrite(ledPin2, HIGH);//move
+  dis_string("moving");
+  delay(1000);
+  digitalWrite(ledPin2, LOW); //stop
+  dis_val(3);
+  delay(90000);                  
+  digitalWrite(ledPin1, HIGH);//move
+  dis_string("moving");
+  delay(1000);
+  digitalWrite(ledPin1,LOW);//stop
+  dis_val(2);
+  delay(90000);
+  digitalWrite(ledPin2,HIGH);//move
+  dis_string("moving");
+  delay(1000);
+  digitalWrite(ledPin2,LOW);//stop
+  dis_val(5);
+  delay(90000);
+  digitalWrite(ledPin2,HIGH);//move
+  dis_string("moving");
+  delay(1000);
+  digitalWrite(ledPin2,LOW);//stop
+  dis_val(3);
+}
